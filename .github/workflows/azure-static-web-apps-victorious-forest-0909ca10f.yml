@@ -14,6 +14,8 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
+    env:
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
     steps:
       - uses: actions/checkout@v3
         with:
@@ -24,7 +26,7 @@ jobs:
         with:
           node-version: '14.21.3'
       - name: Set up Proxy Configurations
-        run: echo "::set-env name=HTTP_PROXY::http://qoh2kor:Fiserv%40103105@rb-proxy-de.bosch.com:8080/"
+        run: echo "HTTP_PROXY=http://qoh2kor:Fiserv%40103105@rb-proxy-de.bosch.com:8080/" >> $GITHUB_ENV
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
